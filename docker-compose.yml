@@ -1,9 +1,11 @@
-version: '3'
+version: '3.6'
 services:
   db:
     image: mysql:5.7.23
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    networks:
+      - system_net
     environment:
       MYSQL_ROOT_PASSWORD: password
     ports:
@@ -16,6 +18,8 @@ services:
       context: .
       args:
         UID: ${UID:-1001}
+    networks:
+      - system_net
     volumes:
       - .:/usr/src/app
     ports:
@@ -23,3 +27,7 @@ services:
     depends_on:
       - db
     user: deploy
+networks:
+  system_net:
+    name: system_net
+    driver: bridge
