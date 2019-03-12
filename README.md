@@ -1,24 +1,29 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```ruby
+# build image
+docker-compose build
 
-Things you may want to cover:
+# bundle
+docker-compose run -u root backend bundle
 
-* Ruby version
+# create database
+docker-compose run backend bundle exec rails db:create db:migrate db:seed
 
-* System dependencies
+# start
+docker-compose up
+```
 
-* Configuration
+New project need to add `db (docker-compose.yml mysql name)` to `database.yml`
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```ruby
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: db
+  port: 3306
+  username: root
+  password: password
+  socket: /tmp/mysql.sock
+```
